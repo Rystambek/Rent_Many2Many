@@ -76,3 +76,15 @@ class GruopId_All_Students(View):
         
         students = to_dict_group(group)['students']
         return JsonResponse(students,safe=False)
+    
+class remove(View):
+    def delete(self,request:HttpRequest,gr_id,id) -> JsonResponse:
+            try:
+                student = Customer.objects.get(id = id)
+                group = Group.objects.filter(id = gr_id,student=student)
+                
+            except ObjectDoesNotExist:
+                return JsonResponse({'status': 'object does not exist!'})
+                
+            group.delete()
+            return JsonResponse({"status":200})
